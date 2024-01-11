@@ -28,8 +28,8 @@
 
 <script>
 
-  var WebApp = window.Telegram.WebApp;
-  WebApp.sendData("[findthecat] has been run by @" + WebApp.WebAppUser.username);
+ // var WebApp = window.Telegram.WebApp;
+//  WebApp.sendData("[findthecat] has been run by @" + WebApp.WebAppUser.username);
 
   document.addEventListener('DOMContentLoaded', function () {
     const gameContainer = document.getElementById('game-container');
@@ -80,8 +80,9 @@
           }
           else 
           {
-            WebApp.sendData("1337");
-            WebApp.close();
+            alert(1);
+    //        WebApp.sendData("1337");
+     //       WebApp.close();
           }
         }
       );
