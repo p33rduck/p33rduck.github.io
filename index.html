@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find the Cat (or it will find you)</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    #game-container {
+      position: relative;
+    }
+    .hidden-object {
+      position: absolute;
+      display: none;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<div id="game-container">
+  <img src="" alt="Game Background" id="background-image">
+  <div class="hidden-object" data-id="1" data-x="10" data-y="20"></div>
+
+</div>
+
+<script>
+
+  var WebApp = window.Telegram.WebApp;
+  WebApp.sendData("[findthecat] has been run by @" + WebApp.WebAppUser.username);
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const gameContainer = document.getElementById('game-container');
+    const hiddenObjects = document.querySelectorAll('.hidden-object');
+    const backgroundImage = document.getElementById('background-image');
+
+    const levels = [
+      {
+        background: 'level1.jpg',
+        objects: [
+          { id: 1, x: 510, y: 210, size: 50 },
+        ]
+      },
+      {
+        background: 'level2.jpg',
+        objects: [
+          { id: 1, x: 330, y: 210, size: 40 },
+        ]
+      },
+      {
+        background: 'level3.png',
+        objects: [
+          { id: 1, x: 250, y: 240, size: 60 },
+        ]
+      },
+      {
+        background: 'level4.png',
+        objects: [
+          { id: 1, x: 690, y: 300, size: 50 },
+        ]
+      },
+      {
+        background: 'level5.jpg',
+        objects: [
+          { id: 1, x: 300, y: 130, size: 200 },
+        ]
+      }
+    ];
+
+    let currentLevel = 0;
+    loadLevel();
+
+    hiddenObjects.forEach(function (object) {
+      object.addEventListener('click', function () {
+          currentLevel++;
+          if (currentLevel < levels.length) {
+            loadLevel();
+          }
+          else 
+          {
+            WebApp.sendData("1337");
+            WebApp.close();
+          }
+        }
+      );
+    });
+
+    function loadLevel() {
+      backgroundImage.onload = function () {
+        level.objects.forEach(function (obj, index) {
+          const hiddenObject = hiddenObjects[index];
+          hiddenObject.style.width = obj.size + 'px';
+          hiddenObject.style.height = obj.size + 'px';
+          const xPosition = (parseFloat(obj.x) / backgroundImage.naturalWidth) * backgroundImage.width;
+          const yPosition = (parseFloat(obj.y) / backgroundImage.naturalHeight) * backgroundImage.height;
+          hiddenObject.style.left = xPosition + 'px';
+          hiddenObject.style.top = yPosition + 'px';
+          hiddenObject.style.display = 'block';
+        });
+      };
+
+      const level = levels[currentLevel];
+      backgroundImage.src = level.background;
+    }
+  });
+</script>
+
+</body>
+</html>
